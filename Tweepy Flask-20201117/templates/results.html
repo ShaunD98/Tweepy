@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>results page</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/modules/exporting.js"></script>
+    <script src="https://code.highcharts.com/modules/export-data.js"></script>
+    <script src="https://code.highcharts.com/modules/accessibility.js"></script>
+</head>
+<script>
+var good = 0;
+var bad = 0;
+$( document ).ready(function() {
+    $.getJSON('results.json', function (data)
+    {findtotals(data.comp_score);
+    Highcharts.chart('container', {
+  chart: {
+    plotBackgroundColor: null,
+    plotBorderWidth: null,
+    plotShadow: false,
+    type: 'pie'
+  },
+  title: {
+    text: 'Opinions about LeGoat James'
+  },
+  tooltip: {
+    pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+  },
+  accessibility: {
+    point: {
+      valueSuffix: '%'
+    }
+  },
+  plotOptions: {
+    pie: {
+      allowPointSelect: true,
+      cursor: 'pointer',
+      dataLabels: {
+        enabled: true,
+        format: '<b>{point.name}</b>: {point.percentage:.1f} %'
+      }
+    }
+  },
+  series: [{
+    name: 'Tweets',
+    colorByPoint: true,
+    data: [{
+      name: 'The Truth',
+      y: good,
+      sliced: true,
+      selected: true
+    }, {
+      name: 'Propaganda',
+      y: bad
+    }
+    ]
+  }]
+});
+
+    console.log(data)});
+});
+function findtotals(results){
+for(var i=0;i<1000;i++)
+{
+var bron = results[i];
+if (bron === "positive"){good++;}
+else if (bron === "neutral"){}
+else {bad++;}
+
+}
+console.log(good)
+console.log(bad)
+}
+</script>
+<body>
+<figure class="highcharts-figure">
+    <div id="container"></div>
+</figure>
+
+</body>
+</html>
